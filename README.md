@@ -4,8 +4,7 @@ Docker container for hosting python Flask/Flask-RESTPlus apps on Raspberry Pi us
 * nginx is only set up to serve SSL on port 443; if you want insecure serving look elsewhere.
 
 ### Building on Raspberri Pi
-This image is set up for building on an x86_64 machine or automated building on dockerhub, so it will not build out of
-the box on a Raspberry Pi ! Use these commands to backup the dockerfile and then modify it to build on a Pi:
+This image is set up for building on an x86_64 machine or automated building on dockerhub, so it will not build out of the box on a Raspberry Pi! Use these commands to backup the dockerfile and then modify it to build on a Pi:
 
 ```Shell
 cp Dockerfile Dockerfile.x86_64
@@ -14,13 +13,11 @@ sed -e 's|FROM.*|FROM resin/rpi-raspbian:jessie-20160831|' -e '/cross-build/d' -
 
 ## Usage
 
-This container is not meaningful on its own; it needs to have your Flask app installed in it.  See the [example](example) directory for a
-fully working sample.
+This container is not meaningful on its own; it needs to have your Flask app installed in it.  See the example directory for a fully working sample.
 
 To create a container for your Flask app:
 
-1. Create a ```uwsgi-app.ini``` in your application directory with the name of the module and app variable. For instance, a
-```main.py``` with the Flask instance named ```app``` would mean the ini file would contain this:
+1. Create a ```uwsgi-app.ini``` in your application directory with the name of the module and app variable. For instance, a ```main.py``` with the Flask instance named ```app``` would mean the ini file would contain this:
 
     ```ini
     [uwsgi]
@@ -28,9 +25,7 @@ To create a container for your Flask app:
     callable = app
     ```
 
-2. Create an SSL certificate for nginx to use, or if you already have one copy it into the docker build directory.
-[DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04)
-has an excellent tutorial if you need more help.
+2. Create an SSL certificate for nginx to use, or if you already have one copy it into the docker build directory. [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04) has an excellent tutorial if you need more help.
 
     ```
     openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout mycert.key -out mycert.crt
@@ -50,8 +45,7 @@ has an excellent tutorial if you need more help.
     RUN pip install -U -r /app/requirements.txt
     ```
 
-6. Build and run your container, forwarding the container port 443 to wherever you want it on your container host. For instance, to
-forward to port 4343:
+6. Build and run your container, forwarding the container port 443 to wherever you want it on your container host. For instance, to forward to port 4343:
 
     ```Shell
     docker build -t myapp .  
