@@ -3,6 +3,9 @@ Docker container for hosting python Flask/Flask-RESTPlus apps on Raspberry Pi us
 * Only python 2.7 is installed; if you want python 3 you will need to add it.
 * nginx is only set up to serve SSL on port 443; if you want insecure serving look elsewhere.
 
+Image on Docker Hub: https://hub.docker.com/r/cseelye/rpi-nginx-uwsgi-flask/  
+Source on Github: https://github.com/cseelye/rpi-nginx-uwsgi-flask  
+
 ### Building on Raspberri Pi
 This image is set up for building on an x86_64 machine or automated building on dockerhub, so it will not build out of the box on a Raspberry Pi! Use these commands to backup the dockerfile and then modify it to build on a Pi:
 
