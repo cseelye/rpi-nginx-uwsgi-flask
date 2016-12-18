@@ -1,0 +1,2 @@
+# Put your required python modules here, or create automatically with pip freeze
+pep8==1.7.0
