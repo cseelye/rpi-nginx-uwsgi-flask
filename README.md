@@ -1,7 +1,7 @@
 # rpi-nginx-uwsgi-flask
 Docker container for hosting python Flask/Flask-RESTPlus apps on Raspberry Pi using nginx and uWSGI.  
 * Only python 2.7 is installed; if you want python 3 you will need to add it.
-* nginx is only set up to serve SSL on port 443; if you want insecure serving look elsewhere.
+* nginx is only set up to serve on port 80; if you want SSL (which you should) either drop in a new app.conf nginx config, or run an SSL proxy in front of it.
 
 Image on Docker Hub: https://hub.docker.com/r/cseelye/rpi-nginx-uwsgi-flask/  
 Source on Github: https://github.com/cseelye/rpi-nginx-uwsgi-flask  
@@ -28,31 +28,23 @@ To create a container for your Flask app:
     callable = app
     ```
 
-2. Create an SSL certificate for nginx to use, or if you already have one copy it into the docker build directory. [DigitalOcean](https://www.digitalocean.com/community/tutorials/how-to-create-a-self-signed-ssl-certificate-for-nginx-in-ubuntu-16-04) has an excellent tutorial if you need more help.
+2. Make sure your application prerequisites are saved in a standard ```requirements.txt``` in your application directory.
 
-    ```
-    openssl req -x509 -nodes -days 3650 -newkey rsa:2048 -keyout mycert.key -out mycert.crt
-    ```
+3. Copy your application directory to a subdirectory of the docker build directory.  
 
-3. Make sure your application prerequisites are saved in a standard ```requirements.txt``` in your application directory.
-
-4. Copy your application directory to a subdirectory of the docker build directory.  
-
-5. Create a Dockerfile to build a container from this one, with your app and SSL certificate:
+4. Create a Dockerfile to build a container from this one, with your app and requirements:
 
     ```Dockerfile
     FROM cseelye/rpi-nginx-uwsgi-flask:latest
-    COPY mycert.crt /etc/ssl/nginx.crt
-    COPY mycert.key /etc/ssl/nginx.key
     COPY myappdirectory /app
     RUN pip install -U -r /app/requirements.txt
     ```
 
-6. Build and run your container, forwarding the container port 443 to wherever you want it on your container host. For instance, to forward to port 4343:
+6. Build and run your container, forwarding the container port 80 to wherever you want it on your container host. For instance, to forward to port 8080:
 
     ```Shell
     docker build -t myapp .  
-    docker run -p 4343:443 myapp
+    docker run -p 8080:80 myapp
     ```
 
-Now if you visit https://hostIP:4343/ in your browser you should see your Flask app.
+Now if you visit https://hostIP:8080/ in your browser you should see your Flask app.
